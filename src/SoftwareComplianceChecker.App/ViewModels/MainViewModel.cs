@@ -1,12 +1,14 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Win32;
+using SoftwareComplianceChecker.Core;
 using SoftwareComplianceChecker.Core.Abstractions;
 using SoftwareComplianceChecker.Core.Configuration;
 using SoftwareComplianceChecker.Core.Models;
@@ -20,6 +22,14 @@ public sealed partial class MainViewModel : ObservableObject
 {
     /// <summary>Filter value meaning "do not filter on this field".</summary>
     public const string AnyValue = "All";
+
+    /// <summary>Computed once: the version cannot change while the process runs.</summary>
+    private static readonly string WindowTitle = ApplicationVersion.BuildTitle(
+        "Software Compliance Checker",
+        Assembly.GetEntryAssembly()?
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                .InformationalVersion
+        ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString());
 
     private readonly IComplianceScanService scanService;
     private readonly IReportExportService exportService;
@@ -75,6 +85,16 @@ public sealed partial class MainViewModel : ObservableObject
         this.PortableView = new CollectionViewSource { Source = this.PortableFindings }.View;
         this.PortableView.Filter = this.MatchesFilters;
     }
+
+    /// <summary>
+    /// The window title, carrying the running version.
+    /// </summary>
+    /// <remarks>
+    /// Read from the assembly rather than written out, so it cannot drift from the version in
+    /// Directory.Build.props. Knowing which build produced a report matters when one is sent
+    /// on for review.
+    /// </remarks>
+    public string Title => WindowTitle;
 
     /// <summary>Installed software findings, failures first.</summary>
     public ObservableCollection<ScanFinding> InstalledFindings { get; } = [];
