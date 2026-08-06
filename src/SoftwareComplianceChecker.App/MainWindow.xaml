@@ -39,6 +39,16 @@
             <Setter Property="Margin" Value="0,0,0,8" />
         </Style>
 
+        <!-- Marks a tab whose section contains at least one failure, so a violation in a tab
+             the user has not opened is still visible. -->
+        <Style x:Key="FailureDot" TargetType="Ellipse">
+            <Setter Property="Width" Value="8" />
+            <Setter Property="Height" Value="8" />
+            <Setter Property="Margin" Value="8,1,0,0" />
+            <Setter Property="Fill" Value="{StaticResource AppFail}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
         <!-- The scan button is the one action the window exists for, so it carries the
              saturated primary colour rather than the theme's muted default. -->
         <Style x:Key="PrimaryActionButton" TargetType="Button"
@@ -258,7 +268,15 @@
         <!-- Sections -->
         <TabControl Grid.Row="3" Background="Transparent" BorderThickness="0">
 
-            <TabItem Header="Windows License">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Windows License" VerticalAlignment="Center" />
+                        <Ellipse Style="{StaticResource FailureDot}"
+                                 Visibility="{Binding LicenseFailed, Converter={StaticResource EmptyToCollapsed}}"
+                                 ToolTip="The Windows license check failed." />
+                    </StackPanel>
+                </TabItem.Header>
                 <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel DataContext="{Binding License}">
@@ -322,7 +340,15 @@
                 </Border>
             </TabItem>
 
-            <TabItem Header="Installed Software">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Installed Software" VerticalAlignment="Center" />
+                        <Ellipse Style="{StaticResource FailureDot}"
+                                 Visibility="{Binding HasInstalledFailures, Converter={StaticResource EmptyToCollapsed}}"
+                                 ToolTip="{Binding InstalledFailureCount, StringFormat='{}{0} installed application(s) failed the policy.'}" />
+                    </StackPanel>
+                </TabItem.Header>
                 <DockPanel Margin="0,12,0,0">
                     <Grid DockPanel.Dock="Top" Margin="0,0,0,10">
                         <Grid.ColumnDefinitions>
@@ -400,7 +426,15 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Header="Portable Software">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Portable Software" VerticalAlignment="Center" />
+                        <Ellipse Style="{StaticResource FailureDot}"
+                                 Visibility="{Binding HasPortableFailures, Converter={StaticResource EmptyToCollapsed}}"
+                                 ToolTip="{Binding PortableFailureCount, StringFormat='{}{0} portable executable(s) failed the policy.'}" />
+                    </StackPanel>
+                </TabItem.Header>
                 <DockPanel Margin="0,12,0,0">
                     <TextBlock DockPanel.Dock="Top" Margin="0,0,0,8" Opacity="0.7" TextWrapping="Wrap"
                                Text="Only prohibited portable executables are listed. Permitted executables in the scanned folders are counted but not shown." />

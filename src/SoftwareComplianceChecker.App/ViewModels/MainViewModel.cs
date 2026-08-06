@@ -119,6 +119,28 @@ public sealed partial class MainViewModel : ObservableObject
     /// <summary>The Windows licensing result, once a scan has run.</summary>
     public WindowsLicenseInfo? License => this.Report?.License;
 
+    /// <summary>Whether the Windows license check failed.</summary>
+    /// <remarks>
+    /// These per-section counts drive the badges on the tab headers, so a failure buried in a
+    /// tab the user has not opened is still visible. They deliberately ignore the search and
+    /// filter state: a badge reports what the scan found, not what is currently on screen.
+    /// </remarks>
+    public bool LicenseFailed => this.Report?.License.Status == ComplianceStatus.Fail;
+
+    /// <summary>Number of installed applications that failed the policy.</summary>
+    public int InstalledFailureCount =>
+        this.Report?.InstalledSoftware.Count(f => f.Status == ComplianceStatus.Fail) ?? 0;
+
+    /// <summary>Whether any installed application failed the policy.</summary>
+    public bool HasInstalledFailures => this.InstalledFailureCount > 0;
+
+    /// <summary>Number of portable executables that failed the policy.</summary>
+    public int PortableFailureCount =>
+        this.Report?.PortableSoftware.Count(f => f.Status == ComplianceStatus.Fail) ?? 0;
+
+    /// <summary>Whether any portable executable failed the policy.</summary>
+    public bool HasPortableFailures => this.PortableFailureCount > 0;
+
     /// <summary>Runs a compliance scan.</summary>
     [RelayCommand(CanExecute = nameof(CanScan))]
     private async Task ScanAsync()
@@ -251,6 +273,11 @@ public sealed partial class MainViewModel : ObservableObject
         this.OnPropertyChanged(nameof(this.PassCountText));
         this.OnPropertyChanged(nameof(this.FailCountText));
         this.OnPropertyChanged(nameof(this.License));
+        this.OnPropertyChanged(nameof(this.LicenseFailed));
+        this.OnPropertyChanged(nameof(this.InstalledFailureCount));
+        this.OnPropertyChanged(nameof(this.HasInstalledFailures));
+        this.OnPropertyChanged(nameof(this.PortableFailureCount));
+        this.OnPropertyChanged(nameof(this.HasPortableFailures));
 
         this.ExportCommand.NotifyCanExecuteChanged();
         this.RefreshViews();
