@@ -1,0 +1,92 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build, for example 1.0.0'
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  release:
+    name: Build and publish release
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Resolve version
+        id: version
+        shell: pwsh
+        run: |
+          $version = if ($env:GITHUB_REF -like 'refs/tags/v*') {
+            $env:GITHUB_REF -replace '^refs/tags/v', ''
+          } else {
+            '${{ github.event.inputs.version }}'
+          }
+
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            throw "Could not resolve a version to build."
+          }
+
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Building version $version"
+
+      # A release that has not passed its tests is not a release.
+      - name: Test
+        run: dotnet test --configuration Release
+
+      - name: Publish
+        run: dotnet publish src/SoftwareComplianceChecker.App -p:PublishProfile=win-x64 -p:Version=${{ steps.version.outputs.version }}
+
+      - name: Package
+        id: package
+        shell: pwsh
+        run: |
+          $version = '${{ steps.version.outputs.version }}'
+          $source = "src/SoftwareComplianceChecker.App/bin/Release/net8.0-windows/publish/win-x64"
+          $archive = "SoftwareComplianceChecker-$version-win-x64.zip"
+
+          Compress-Archive -Path "$source/*" -DestinationPath $archive -Force
+
+          $hash = (Get-FileHash $archive -Algorithm SHA256).Hash
+          "$hash  $archive" | Out-File -FilePath "$archive.sha256" -Encoding ascii
+
+          "archive=$archive" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Packaged $archive ($hash)"
+
+      - name: Create GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = '${{ steps.version.outputs.version }}'
+          $archive = '${{ steps.package.outputs.archive }}'
+
+          $notes = @"
+          Windows 10 and 11, x64.
+
+          Download the archive, extract it anywhere, and run ``SoftwareComplianceChecker.exe``.
+          No installation and no .NET runtime are required.
+
+          ``rules.json``, ``portableFolders.json`` and ``appsettings.json`` sit beside the
+          executable and can be edited to change the compliance policy without rebuilding.
+          "@
+
+          gh release create "v$version" $archive "$archive.sha256" `
+            --title "v$version" `
+            --notes $notes

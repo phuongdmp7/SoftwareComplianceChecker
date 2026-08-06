@@ -1,5 +1,7 @@
 # SoftwareComplianceChecker
 
+[![CI](https://github.com/phuongdmp7/SoftwareComplianceChecker/actions/workflows/ci.yml/badge.svg)](https://github.com/phuongdmp7/SoftwareComplianceChecker/actions/workflows/ci.yml)
+
 A lightweight Windows desktop application that audits a workstation against a configurable software compliance policy and produces a professional report.
 
 It runs entirely offline, needs no installation, and ships as a single self-contained executable.

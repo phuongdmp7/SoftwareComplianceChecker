@@ -32,6 +32,14 @@ dotnet publish src/SoftwareComplianceChecker.App -p:PublishProfile=win-x64
 
 The test project sets `RollForward=LatestMajor` so the test host runs on a machine that only has a newer runtime than 8.0 installed.
 
+### CI
+
+`.github/workflows/ci.yml` builds and tests on both `windows-latest` and `ubuntu-latest`. The Windows job additionally publishes the single-file executable and **launches it** to confirm it stays running — this is the only automated check that catches XAML binding and pack-URI failures, which the compiler cannot see.
+
+The Linux job fails if `samples/` differs from what the exporters produce, so committed samples cannot drift from real output. Regenerate them by running `dotnet test`.
+
+`.github/workflows/release.yml` builds, tests, packages, and creates a GitHub release on a `v*` tag.
+
 ## Architecture
 
 Clean Architecture + MVVM. Layering: `Views` → `ViewModels` → `Services` → `Core`. Dependencies point inward; `Core` (models, rule abstractions) references nothing outward. Composition happens once via `Microsoft.Extensions.DependencyInjection` in the `DependencyInjection` folder — services are constructor-injected, never resolved from a static locator.
