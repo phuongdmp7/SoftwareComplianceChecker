@@ -4,7 +4,7 @@ A lightweight Windows desktop application that audits a workstation against a co
 
 It runs entirely offline, needs no installation, and ships as a single self-contained executable.
 
-> **Status: in development.** The specification is settled and documented in [CLAUDE.md](CLAUDE.md), but the application is not yet implemented. Nothing here is buildable at the moment.
+> **Status: implemented, pending validation on Windows.** The solution builds clean and all unit tests pass, but the application has not yet been run on a Windows machine. The UI, the live registry and WMI scans, and the published executable are unverified against real hardware. See [docs/implementation-plan.md](docs/implementation-plan.md).
 
 ## What it does
 
@@ -50,15 +50,23 @@ dotnet restore
 dotnet build -c Release
 dotnet test
 
-dotnet publish src/SoftwareComplianceChecker -c Release -r win-x64 --self-contained true `
-  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+# Single-file self-contained executable
+dotnet publish src/SoftwareComplianceChecker.App -p:PublishProfile=win-x64
 ```
+
+The published output is `SoftwareComplianceChecker.exe` alongside the three configuration files. Copy the folder anywhere and run it; no installation and no .NET runtime are required.
 
 ## Tech stack
 
-C# · .NET 8 · WPF · MVVM · Microsoft.Extensions.DependencyInjection
+C# · .NET 8 · WPF · MVVM · Microsoft.Extensions.DependencyInjection · MaterialDesignThemes
 
-Clean Architecture, no commercial dependencies. Scanners detect; a separate rule engine decides compliance.
+Clean Architecture across five projects:
+
+```
+Core ← Rules ← Scanning ← Export ← App (WPF)
+```
+
+`Core` holds the domain and the abstractions and depends on nothing. Scanners detect; a separate rule engine decides compliance. All Windows API access sits behind interfaces, so the decision logic is unit tested without a Windows machine.
 
 ## License
 

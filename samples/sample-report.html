@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance Report - WORKSTATION-01</title>
+<style>
+  :root {
+    --bg: #12141a; --surface: #1b1e26; --border: #2b2f3a;
+    --text: #e6e8ee; --muted: #9aa1b1;
+    --pass: #3fb950; --fail: #f85149;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-size: 14px; line-height: 1.5;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; }
+  h1 { font-size: 24px; margin: 0 0 16px; font-weight: 600; }
+  h2 { font-size: 17px; margin: 40px 0 12px; font-weight: 600; }
+  h3 { font-size: 14px; margin: 20px 0 8px; color: var(--muted); font-weight: 600; }
+  .count { color: var(--muted); font-weight: 400; font-size: 14px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 32px; margin: 0; }
+  .meta div { min-width: 180px; }
+  .meta dt { color: var(--muted); font-size: 12px; }
+  .meta dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+           gap: 12px; margin: 24px 0 8px; }
+  .card { background: var(--surface); border: 1px solid var(--border);
+          border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+  .card .label { color: var(--muted); font-size: 12px; text-transform: uppercase;
+                 letter-spacing: .04em; }
+  .card .value { font-size: 26px; font-weight: 600; }
+  .card.pass .value { color: var(--pass); }
+  .card.fail .value { color: var(--fail); }
+  table { width: 100%; border-collapse: collapse; background: var(--surface);
+          border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border);
+           vertical-align: top; }
+  th { color: var(--muted); font-size: 12px; text-transform: uppercase;
+       letter-spacing: .04em; font-weight: 600; }
+  tbody tr:last-child td { border-bottom: none; }
+  tr.fail td { background: rgba(248, 81, 73, .06); }
+  .path { color: var(--muted); font-family: Consolas, "Courier New", monospace;
+          font-size: 12px; word-break: break-all; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px;
+          font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+  .pill.pass { background: rgba(63, 185, 80, .15); color: var(--pass); }
+  .pill.fail { background: rgba(248, 81, 73, .15); color: var(--fail); }
+  .verdict { font-weight: 600; margin: 16px 0 0; }
+  .verdict.pass { color: var(--pass); }
+  .verdict.fail { color: var(--fail); }
+  .evidence { margin: 8px 0 0; padding-left: 20px; color: var(--muted); }
+  .evidence li { margin-bottom: 4px; }
+  .empty { color: var(--muted); }
+</style>
+</head><body><div class="page">
+<header>
+<h1>Software Compliance Report</h1>
+<dl class="meta">
+<div><dt>Computer</dt><dd>WORKSTATION-01</dd></div>
+<div><dt>User</dt><dd>CONTOSO\jsmith</dd></div>
+<div><dt>Operating system</dt><dd>Microsoft Windows 11 Pro (10.0.26100)</dd></div>
+<div><dt>Scan time</dt><dd>Thursday, 06 August 2026 09:30</dd></div>
+<div><dt>Duration</dt><dd>6.42 s</dd></div>
+</dl></header>
+<section class="cards">
+<div class="card fail"><span class="label">Overall result</span><span class="value">FAIL</span></div>
+<div class="card"><span class="label">Total checks</span><span class="value">10</span></div>
+<div class="card pass"><span class="label">Passed</span><span class="value">4</span></div>
+<div class="card fail"><span class="label">Failed</span><span class="value">6</span></div>
+</section>
+<section><h2>Windows License</h2>
+<dl class="meta">
+<div><dt>Edition</dt><dd>Professional</dd></div>
+<div><dt>Product name</dt><dd>Windows 11 Pro</dd></div>
+<div><dt>Version</dt><dd>24H2</dd></div>
+<div><dt>Build</dt><dd>26100.1742</dd></div>
+<div><dt>License status</dt><dd>Licensed</dd></div>
+<div><dt>Activation channel</dt><dd>Volume:GVLK</dd></div>
+<div><dt>License description</dt><dd>Windows(R) Operating System, VOLUME_KMSCLIENT channel</dd></div>
+<div><dt>Partial product key</dt><dd>3V66T</dd></div>
+<div><dt>Activation type</dt><dd>Kms</dd></div>
+<div><dt>OEM BIOS key present</dt><dd>No</dd></div>
+<div><dt>KMS host</dt><dd>kms.contoso.local</dd></div>
+</dl>
+<p class="verdict fail">FAIL &mdash; Windows appears to use KMS activation.</p>
+<h3>KMS evidence</h3><ul class="evidence">
+<li>Product key channel reports &#39;Volume:GVLK&#39;, which is a KMS client channel.</li>
+<li>License description reports &#39;Windows(R) Operating System, VOLUME_KMSCLIENT channel&#39;, which identifies a KMS client.</li>
+<li>A KMS host is configured: kms.contoso.local:1688.</li>
+<li>Activation expires in approximately 180 days, consistent with the 180-day KMS renewal period rather than a permanent license.</li>
+</ul>
+</section>
+<section><h2>Installed Software <span class="count">8</span></h2>
+<table><thead><tr>
+<th>Status</th><th>Name</th><th>Publisher</th><th>Version</th><th>Location</th><th>Reason</th>
+</tr></thead><tbody>
+<tr class="fail">
+<td><span class="pill fail">FAIL</span></td>
+<td>Adobe Photoshop 2024</td>
+<td>Adobe Inc.</td>
+<td>25.9.1</td>
+<td class="path">C:\Program Files\Adobe\Adobe Photoshop 2024</td>
+<td>Software prohibited by policy.</td>
+</tr>
+<tr class="fail">
+<td><span class="pill fail">FAIL</span></td>
+<td>JetBrains Rider 2025.1</td>
+<td>JetBrains s.r.o.</td>
+<td>2025.1.2</td>
+<td class="path">C:\Program Files\JetBrains\Rider 2025.1</td>
+<td>Software prohibited by policy.</td>
+</tr>
+<tr class="fail">
+<td><span class="pill fail">FAIL</span></td>
+<td>Microsoft 365 Apps for enterprise</td>
+<td>Microsoft Corporation</td>
+<td>16.0.18324.20168</td>
+<td class="path">C:\Program Files\Microsoft Office</td>
+<td>Software prohibited by policy.</td>
+</tr>
+<tr class="fail">
+<td><span class="pill fail">FAIL</span></td>
+<td>WinRAR 7.01 (64-bit)</td>
+<td>win.rar GmbH</td>
+<td>7.01</td>
+<td class="path">C:\Program Files\WinRAR</td>
+<td>Software prohibited by policy.</td>
+</tr>
+<tr class="pass">
+<td><span class="pill pass">PASS</span></td>
+<td>Blender</td>
+<td>Blender Foundation</td>
+<td>4.2.1</td>
+<td class="path">C:\Program Files\Blender Foundation\Blender 4.2</td>
+<td>No matching compliance rule.</td>
+</tr>
+<tr class="pass">
+<td><span class="pill pass">PASS</span></td>
+<td>Git</td>
+<td>The Git Development Community</td>
+<td>2.46.0</td>
+<td class="path">C:\Program Files\Git</td>
+<td>Permitted by policy.</td>
+</tr>
+<tr class="pass">
+<td><span class="pill pass">PASS</span></td>
+<td>Unity Hub</td>
+<td>Unity Technologies ApS</td>
+<td>3.9.1</td>
+<td class="path">C:\Program Files\Unity Hub</td>
+<td>Permitted by policy.</td>
+</tr>
+<tr class="pass">
+<td><span class="pill pass">PASS</span></td>
+<td>Visual Studio Code</td>
+<td>Microsoft Corporation</td>
+<td>1.93.1</td>
+<td class="path">C:\Users\jsmith\AppData\Local\Programs\Microsoft VS Code</td>
+<td>Permitted by policy.</td>
+</tr>
+</tbody></table></section>
+<section><h2>Portable Software <span class="count">1</span></h2>
+<table><thead><tr>
+<th>Status</th><th>Name</th><th>Publisher</th><th>Version</th><th>Location</th><th>Reason</th>
+</tr></thead><tbody>
+<tr class="fail">
+<td><span class="pill fail">FAIL</span></td>
+<td>Toolbag</td>
+<td></td>
+<td></td>
+<td class="path">C:\Users\jsmith\Downloads\Marmoset\Toolbag.exe</td>
+<td>Software prohibited by policy.</td>
+</tr>
+</tbody></table></section>
+<section><h2>Scan notes</h2><ul class="evidence">
+<li>The scan ran without administrative rights. Some evidence, such as scheduled tasks, may not have been readable.</li>
+</ul></section>
+</div></body></html>

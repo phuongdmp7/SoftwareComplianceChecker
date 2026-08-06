@@ -6,27 +6,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 SoftwareComplianceChecker — a Windows desktop app (C# / .NET 8 / WPF / MVVM) that audits a workstation against a configurable software compliance policy and produces a report. Fully offline, no installation, self-contained single executable, MIT.
 
-**Status: greenfield.** At the time this file was written the repo contains only `.gitignore`, `README.md`, and this file. The specification below is the design contract; nothing is implemented yet.
+**Status: implemented; never run on Windows.** The solution builds clean and all unit tests pass on Linux. The UI, live registry/WMI scans, and the published executable have not been exercised on real hardware.
 
 **The path is misleading.** This lives under `~/UnityProjects/` but is **not** a Unity project. Global Unity/DOTS rules (asmdef, ECS, UnityMCP, `refresh_unity`, domain reload) do **not** apply here. Use the .NET toolchain.
 
 ## Commands
 
-Development happens on Windows; the repo may be edited from Linux, but build/test/run require Windows (WPF + registry + WMI).
+Everything below **works on Linux**, including the WPF build. Only *running* the app needs Windows.
 
-```powershell
-dotnet restore
-dotnet build -c Debug
-dotnet run --project src/SoftwareComplianceChecker
-
-dotnet test                                            # all tests
-dotnet test --filter "FullyQualifiedName~RuleMatching" # one class / namespace
-dotnet test --filter "Name=Matches_ContainsRule_IsCaseInsensitive"  # one test
+```bash
+dotnet build                                            # whole solution
+dotnet test                                             # all tests
+dotnet test --filter "FullyQualifiedName~RuleEngineTests"        # one class
+dotnet test --filter "FullyQualifiedName~Higher_priority_rule"   # one test
 
 # Single-file self-contained executable (primary deliverable)
-dotnet publish src/SoftwareComplianceChecker -c Release -r win-x64 --self-contained true `
-  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+dotnet publish src/SoftwareComplianceChecker.App -p:PublishProfile=win-x64
 ```
+
+`dotnet test --filter "Name=..."` does **not** match these tests; use `FullyQualifiedName~`.
+
+### Why the cross-platform build works
+
+`Directory.Build.props` sets `EnableWindowsTargeting=true`, which lets `net8.0-windows` and WPF compile on a non-Windows host. Do not remove it — without it every project fails with `NETSDK1100`.
+
+The test project sets `RollForward=LatestMajor` so the test host runs on a machine that only has a newer runtime than 8.0 installed.
 
 ## Architecture
 
@@ -68,6 +72,10 @@ The naive check is wrong: **KMS-activated Windows reports itself as activated.**
 KMS evidence → FAIL. Retail/OEM with no KMS evidence → PASS. Surface the collected evidence in the UI and reports, not just the verdict.
 
 ### Known pitfalls
+
+- **`Path.GetFileName` does not split `\` on Linux.** Tests that feed Windows-style paths through production path logic will assert on a full path instead of a file name. `FakeFileSystem` normalises separators for this reason; keep new fakes doing the same.
+- **`RuleMatchType` is deliberately not called `MatchType`** — that collides with `System.IO.MatchType` under implicit usings and makes every consumer file ambiguous.
+- **FluentAssertions is banned** (paid licence from v8). Tests use Shouldly.
 
 - **Never use `Win32_Product`** for installed-software enumeration — it triggers MSI reconfiguration and is pathologically slow. Read the registry uninstall keys.
 - Registry and filesystem access must be async and off the UI thread; the whole scan targets **under 10 seconds**. Portable scanning is the main risk — keep recursion depth bounded.

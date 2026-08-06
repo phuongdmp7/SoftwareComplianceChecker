@@ -1,0 +1,12 @@
+{
+  "maxDepth": 3,
+  "folders": [
+    { "path": "%USERPROFILE%\\Desktop", "enabled": true },
+    { "path": "%USERPROFILE%\\Downloads", "enabled": true },
+    { "path": "%USERPROFILE%\\Documents", "enabled": true },
+    { "path": "C:\\Tools", "enabled": true },
+    { "path": "D:\\Tools", "enabled": true },
+    { "path": "D:\\Apps", "enabled": true },
+    { "path": "E:\\Apps", "enabled": true }
+  ]
+}

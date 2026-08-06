@@ -1,0 +1,313 @@
+<Window x:Class="SoftwareComplianceChecker.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Software Compliance Checker"
+        Height="820" Width="1280"
+        MinHeight="600" MinWidth="960"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontSize="13"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+
+        <Style x:Key="CardLabel" TargetType="TextBlock">
+            <Setter Property="Opacity" Value="0.7" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="CardValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+
+        <Style x:Key="SectionHeading" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+
+        <Style x:Key="FindingsGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="SelectionMode" Value="Single" />
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected" />
+            <Setter Property="EnableRowVirtualization" Value="True" />
+            <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+            <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <TextBlock Text="Software Compliance Checker" FontSize="20" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding StatusMessage}" Opacity="0.7" Margin="0,2,0,0" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Scan"
+                        Command="{Binding ScanCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Width="110" Margin="0,0,8,0" />
+
+                <Button Content="Cancel"
+                        Command="{Binding CancelScanCommand}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Width="90" Margin="0,0,16,0"
+                        Visibility="{Binding IsScanning, Converter={StaticResource EmptyToCollapsed}}" />
+
+                <Button Content="HTML" Command="{Binding ExportCommand}" CommandParameter="Html"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" Width="78" Margin="0,0,6,0" />
+                <Button Content="CSV" Command="{Binding ExportCommand}" CommandParameter="Csv"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" Width="70" Margin="0,0,6,0" />
+                <Button Content="JSON" Command="{Binding ExportCommand}" CommandParameter="Json"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" Width="78" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Progress -->
+        <ProgressBar Grid.Row="1"
+                     Height="4"
+                     IsIndeterminate="True"
+                     Margin="0,0,0,12"
+                     Visibility="{Binding IsScanning, Converter={StaticResource EmptyToCollapsed}}" />
+
+        <!-- Summary cards -->
+        <UniformGrid Grid.Row="2" Columns="4" Margin="0,0,0,16">
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,6,0">
+                <StackPanel>
+                    <TextBlock Text="OVERALL RESULT" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding OverallResultText}"
+                               Style="{StaticResource CardValue}"
+                               Foreground="{Binding OverallFailed, Converter={StaticResource StatusToBrush}}" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}" Margin="6,0">
+                <StackPanel>
+                    <TextBlock Text="TOTAL CHECKS" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding TotalChecksText}" Style="{StaticResource CardValue}" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}" Margin="6,0">
+                <StackPanel>
+                    <TextBlock Text="PASSED" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding PassCountText}" Style="{StaticResource CardValue}"
+                               Foreground="#3FB950" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}" Margin="6,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="FAILED" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding FailCountText}" Style="{StaticResource CardValue}"
+                               Foreground="#F85149" />
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <!-- Sections -->
+        <TabControl Grid.Row="3" Background="Transparent" BorderThickness="0">
+
+            <TabItem Header="Windows License">
+                <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel DataContext="{Binding License}">
+                            <TextBlock Text="{Binding Reason}"
+                                       FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap"
+                                       Foreground="{Binding Status, Converter={StaticResource StatusToBrush}}" />
+
+                            <UniformGrid Columns="3" Margin="0,16,0,0">
+                                <StackPanel Margin="0,0,12,12">
+                                    <TextBlock Text="EDITION" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding Evidence.Edition}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,12,12">
+                                    <TextBlock Text="PRODUCT NAME" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding Evidence.ProductName}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,12">
+                                    <TextBlock Text="VERSION" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding Evidence.Version}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,12,12">
+                                    <TextBlock Text="BUILD" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding Evidence.BuildNumber}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,12,12">
+                                    <TextBlock Text="LICENSE STATUS" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding Evidence.LicenseStatus}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,12">
+                                    <TextBlock Text="ACTIVATION CHANNEL" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding Evidence.ProductKeyChannel}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,12,12">
+                                    <TextBlock Text="ACTIVATION TYPE" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding ActivationType}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,12,12">
+                                    <TextBlock Text="OEM BIOS KEY" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding Evidence.OemBiosKeyPresent}" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,12">
+                                    <TextBlock Text="PARTIAL PRODUCT KEY" Style="{StaticResource CardLabel}" />
+                                    <TextBlock Text="{Binding Evidence.PartialProductKey}" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </UniformGrid>
+
+                            <TextBlock Text="KMS evidence"
+                                       Style="{StaticResource SectionHeading}"
+                                       Margin="0,12,0,8"
+                                       Visibility="{Binding KmsEvidence, Converter={StaticResource EmptyToCollapsed}}" />
+
+                            <ItemsControl ItemsSource="{Binding KmsEvidence}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,0,0,6" Opacity="0.85" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </TabItem>
+
+            <TabItem Header="Installed Software">
+                <DockPanel Margin="0,12,0,0">
+                    <Grid DockPanel.Dock="Top" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=200}"
+                                 materialDesign:HintAssist.Hint="Search name, publisher, location or reason"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,10,0" />
+
+                        <ComboBox Grid.Column="1" Width="120" Margin="0,0,10,0"
+                                  ItemsSource="{Binding StatusOptions}"
+                                  SelectedItem="{Binding SelectedStatus}"
+                                  materialDesign:HintAssist.Hint="Status"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+
+                        <ComboBox Grid.Column="2" Width="170" Margin="0,0,10,0"
+                                  ItemsSource="{Binding CategoryOptions}"
+                                  SelectedItem="{Binding SelectedCategory}"
+                                  materialDesign:HintAssist.Hint="Category"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+
+                        <ComboBox Grid.Column="3" Width="200"
+                                  ItemsSource="{Binding PublisherOptions}"
+                                  SelectedItem="{Binding SelectedPublisher}"
+                                  materialDesign:HintAssist.Hint="Publisher"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+                    </Grid>
+
+                    <DataGrid Style="{StaticResource FindingsGrid}"
+                              ItemsSource="{Binding InstalledView}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Status" Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Status, Converter={StaticResource StatusToText}}"
+                                                   Foreground="{Binding Status, Converter={StaticResource StatusToBrush}}"
+                                                   FontWeight="Bold" FontSize="11" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*" />
+                            <DataGridTextColumn Header="Publisher" Binding="{Binding Publisher}" Width="1.4*" />
+                            <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="110" />
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="130" />
+                            <DataGridTextColumn Header="Reason" Binding="{Binding Reason}" Width="1.6*" />
+                        </DataGrid.Columns>
+
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="12,8">
+                                    <TextBlock Text="{Binding Location}" TextWrapping="Wrap"
+                                               FontFamily="Consolas" FontSize="12" Opacity="0.8" />
+                                    <TextBlock Text="{Binding MatchedRule, StringFormat='Matched rule: {0}'}"
+                                               Margin="0,4,0,0" Opacity="0.7"
+                                               Visibility="{Binding MatchedRule, Converter={StaticResource EmptyToCollapsed}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="Portable Software">
+                <DockPanel Margin="0,12,0,0">
+                    <TextBlock DockPanel.Dock="Top" Margin="0,0,0,8" Opacity="0.7" TextWrapping="Wrap"
+                               Text="Only prohibited portable executables are listed. Permitted executables in the scanned folders are counted but not shown." />
+                    <DataGrid Style="{StaticResource FindingsGrid}"
+                              ItemsSource="{Binding PortableView}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Status" Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Status, Converter={StaticResource StatusToText}}"
+                                                   Foreground="{Binding Status, Converter={StaticResource StatusToBrush}}"
+                                                   FontWeight="Bold" FontSize="11" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="1.4*" />
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="140" />
+                            <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="3*" />
+                            <DataGridTextColumn Header="Reason" Binding="{Binding Reason}" Width="1.6*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+
+        <!-- Machine details -->
+        <Border Grid.Row="4" Style="{StaticResource CardBorder}" Margin="0,16,0,0" Padding="12"
+                Visibility="{Binding HasReport, Converter={StaticResource EmptyToCollapsed}}">
+            <StackPanel Orientation="Horizontal" DataContext="{Binding Report}">
+                <TextBlock Text="{Binding ComputerName, StringFormat='Computer: {0}'}" Margin="0,0,24,0" Opacity="0.8" />
+                <TextBlock Text="{Binding UserName, StringFormat='User: {0}'}" Margin="0,0,24,0" Opacity="0.8" />
+                <TextBlock Text="{Binding OperatingSystem}" Margin="0,0,24,0" Opacity="0.8" />
+                <TextBlock Text="{Binding ScanTime, StringFormat='Scanned: {0:g}'}" Opacity="0.8" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

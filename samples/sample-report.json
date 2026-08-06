@@ -1,0 +1,137 @@
+{
+  "ComputerName": "WORKSTATION-01",
+  "UserName": "CONTOSO\\jsmith",
+  "OperatingSystem": "Microsoft Windows 11 Pro (10.0.26100)",
+  "ScanTime": "2026-08-06T09:30:00.0000000\u002B00:00",
+  "DurationSeconds": 6.42,
+  "Summary": {
+    "OverallResult": "FAIL",
+    "TotalChecks": 10,
+    "PassCount": 4,
+    "FailCount": 6
+  },
+  "WindowsLicense": {
+    "Status": "Fail",
+    "Reason": "Windows appears to use KMS activation.",
+    "ActivationType": "Kms",
+    "Edition": "Professional",
+    "ProductName": "Windows 11 Pro",
+    "Version": "24H2",
+    "BuildNumber": "26100.1742",
+    "LicenseStatus": "Licensed",
+    "ProductKeyChannel": "Volume:GVLK",
+    "LicenseDescription": "Windows(R) Operating System, VOLUME_KMSCLIENT channel",
+    "PartialProductKey": "3V66T",
+    "OemBiosKeyPresent": false,
+    "KmsServerName": "kms.contoso.local",
+    "KmsServerPort": 1688,
+    "KmsEvidence": [
+      "Product key channel reports \u0027Volume:GVLK\u0027, which is a KMS client channel.",
+      "License description reports \u0027Windows(R) Operating System, VOLUME_KMSCLIENT channel\u0027, which identifies a KMS client.",
+      "A KMS host is configured: kms.contoso.local:1688.",
+      "Activation expires in approximately 180 days, consistent with the 180-day KMS renewal period rather than a permanent license."
+    ]
+  },
+  "InstalledSoftware": [
+    {
+      "Name": "Adobe Photoshop 2024",
+      "Publisher": "Adobe Inc.",
+      "Version": "25.9.1",
+      "Location": "C:\\Program Files\\Adobe\\Adobe Photoshop 2024",
+      "Status": "Fail",
+      "Reason": "Software prohibited by policy.",
+      "Category": "Adobe",
+      "MatchedRule": "Adobe (all products)",
+      "Section": "InstalledSoftware"
+    },
+    {
+      "Name": "JetBrains Rider 2025.1",
+      "Publisher": "JetBrains s.r.o.",
+      "Version": "2025.1.2",
+      "Location": "C:\\Program Files\\JetBrains\\Rider 2025.1",
+      "Status": "Fail",
+      "Reason": "Software prohibited by policy.",
+      "Category": "JetBrains",
+      "MatchedRule": "JetBrains (all products)",
+      "Section": "InstalledSoftware"
+    },
+    {
+      "Name": "Microsoft 365 Apps for enterprise",
+      "Publisher": "Microsoft Corporation",
+      "Version": "16.0.18324.20168",
+      "Location": "C:\\Program Files\\Microsoft Office",
+      "Status": "Fail",
+      "Reason": "Software prohibited by policy.",
+      "Category": "Microsoft Office",
+      "MatchedRule": "Microsoft Office (all editions)",
+      "Section": "InstalledSoftware"
+    },
+    {
+      "Name": "WinRAR 7.01 (64-bit)",
+      "Publisher": "win.rar GmbH",
+      "Version": "7.01",
+      "Location": "C:\\Program Files\\WinRAR",
+      "Status": "Fail",
+      "Reason": "Software prohibited by policy.",
+      "Category": "Compression",
+      "MatchedRule": "WinRAR",
+      "Section": "InstalledSoftware"
+    },
+    {
+      "Name": "Blender",
+      "Publisher": "Blender Foundation",
+      "Version": "4.2.1",
+      "Location": "C:\\Program Files\\Blender Foundation\\Blender 4.2",
+      "Status": "Pass",
+      "Reason": "No matching compliance rule.",
+      "Section": "InstalledSoftware"
+    },
+    {
+      "Name": "Git",
+      "Publisher": "The Git Development Community",
+      "Version": "2.46.0",
+      "Location": "C:\\Program Files\\Git",
+      "Status": "Pass",
+      "Reason": "Permitted by policy.",
+      "Category": "Permitted",
+      "MatchedRule": "Explicitly permitted development and creative tools",
+      "Section": "InstalledSoftware"
+    },
+    {
+      "Name": "Unity Hub",
+      "Publisher": "Unity Technologies ApS",
+      "Version": "3.9.1",
+      "Location": "C:\\Program Files\\Unity Hub",
+      "Status": "Pass",
+      "Reason": "Permitted by policy.",
+      "Category": "Permitted",
+      "MatchedRule": "Explicitly permitted development and creative tools",
+      "Section": "InstalledSoftware"
+    },
+    {
+      "Name": "Visual Studio Code",
+      "Publisher": "Microsoft Corporation",
+      "Version": "1.93.1",
+      "Location": "C:\\Users\\jsmith\\AppData\\Local\\Programs\\Microsoft VS Code",
+      "Status": "Pass",
+      "Reason": "Permitted by policy.",
+      "Category": "Permitted",
+      "MatchedRule": "Explicitly permitted development and creative tools",
+      "Section": "InstalledSoftware"
+    }
+  ],
+  "PortableSoftware": [
+    {
+      "Name": "Toolbag",
+      "Location": "C:\\Users\\jsmith\\Downloads\\Marmoset\\Toolbag.exe",
+      "Status": "Fail",
+      "Reason": "Software prohibited by policy.",
+      "Category": "Marmoset",
+      "MatchedRule": "Marmoset",
+      "Section": "PortableSoftware"
+    }
+  ],
+  "Warnings": [
+    "The scan ran without administrative rights. Some evidence, such as scheduled tasks, may not have been readable."
+  ]
+}

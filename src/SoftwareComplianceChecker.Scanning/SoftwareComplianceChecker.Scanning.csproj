@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SoftwareComplianceChecker.Scanning</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SoftwareComplianceChecker.Core\SoftwareComplianceChecker.Core.csproj" />
+    <ProjectReference Include="..\SoftwareComplianceChecker.Rules\SoftwareComplianceChecker.Rules.csproj" />
+  </ItemGroup>
+
+</Project>

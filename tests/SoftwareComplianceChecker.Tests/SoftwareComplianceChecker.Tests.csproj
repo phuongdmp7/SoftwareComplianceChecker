@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SoftwareComplianceChecker.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- Lets the test host run on a machine that has a newer runtime than 8.0 installed.
+         The shipped application is self-contained and unaffected by this. -->
+    <RollForward>LatestMajor</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <!-- Shouldly rather than FluentAssertions: FluentAssertions v8 moved to a paid licence
+         for commercial use, which the no-commercial-dependencies constraint rules out. -->
+    <PackageReference Include="Shouldly" Version="4.2.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SoftwareComplianceChecker.Core\SoftwareComplianceChecker.Core.csproj" />
+    <ProjectReference Include="..\..\src\SoftwareComplianceChecker.Rules\SoftwareComplianceChecker.Rules.csproj" />
+    <ProjectReference Include="..\..\src\SoftwareComplianceChecker.Scanning\SoftwareComplianceChecker.Scanning.csproj" />
+    <ProjectReference Include="..\..\src\SoftwareComplianceChecker.Export\SoftwareComplianceChecker.Export.csproj" />
+  </ItemGroup>
+
+</Project>

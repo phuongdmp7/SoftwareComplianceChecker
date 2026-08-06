@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SoftwareComplianceChecker.Rules</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SoftwareComplianceChecker.Core\SoftwareComplianceChecker.Core.csproj" />
+  </ItemGroup>
+
+</Project>

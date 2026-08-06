@@ -1,0 +1,22 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Allows the WPF/Windows-targeted projects to compile on non-Windows hosts.
+         Building works cross-platform; running still requires Windows. -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Documentation is required on public APIs but not on every internal member. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <Authors>phuongdmp</Authors>
+    <Product>SoftwareComplianceChecker</Product>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+</Project>

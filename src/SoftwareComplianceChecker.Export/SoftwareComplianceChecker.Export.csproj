@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SoftwareComplianceChecker.Export</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SoftwareComplianceChecker.Core\SoftwareComplianceChecker.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- CSV quoting is internal but is the most failure-prone part of export, so it is
+         tested directly rather than only through rendered output. -->
+    <InternalsVisibleTo Include="SoftwareComplianceChecker.Tests" />
+  </ItemGroup>
+
+</Project>

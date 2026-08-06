@@ -1,0 +1,11 @@
+Section,Status,Name,Publisher,Version,Location,Category,Reason,MatchedRule
+WindowsLicense,FAIL,Windows 11 Pro,Microsoft Corporation,24H2,,Windows License,Windows appears to use KMS activation.,
+InstalledSoftware,FAIL,Adobe Photoshop 2024,Adobe Inc.,25.9.1,C:\Program Files\Adobe\Adobe Photoshop 2024,Adobe,Software prohibited by policy.,Adobe (all products)
+InstalledSoftware,FAIL,JetBrains Rider 2025.1,JetBrains s.r.o.,2025.1.2,C:\Program Files\JetBrains\Rider 2025.1,JetBrains,Software prohibited by policy.,JetBrains (all products)
+InstalledSoftware,FAIL,Microsoft 365 Apps for enterprise,Microsoft Corporation,16.0.18324.20168,C:\Program Files\Microsoft Office,Microsoft Office,Software prohibited by policy.,Microsoft Office (all editions)
+InstalledSoftware,FAIL,WinRAR 7.01 (64-bit),win.rar GmbH,7.01,C:\Program Files\WinRAR,Compression,Software prohibited by policy.,WinRAR
+InstalledSoftware,PASS,Blender,Blender Foundation,4.2.1,C:\Program Files\Blender Foundation\Blender 4.2,,No matching compliance rule.,
+InstalledSoftware,PASS,Git,The Git Development Community,2.46.0,C:\Program Files\Git,Permitted,Permitted by policy.,Explicitly permitted development and creative tools
+InstalledSoftware,PASS,Unity Hub,Unity Technologies ApS,3.9.1,C:\Program Files\Unity Hub,Permitted,Permitted by policy.,Explicitly permitted development and creative tools
+InstalledSoftware,PASS,Visual Studio Code,Microsoft Corporation,1.93.1,C:\Users\jsmith\AppData\Local\Programs\Microsoft VS Code,Permitted,Permitted by policy.,Explicitly permitted development and creative tools
+PortableSoftware,FAIL,Toolbag,,,C:\Users\jsmith\Downloads\Marmoset\Toolbag.exe,Marmoset,Software prohibited by policy.,Marmoset

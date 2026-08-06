@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "description": "Software compliance policy. Edit this file to change policy; no recompilation is required. Matching is case-insensitive. A rule matches when ANY of its configured criteria match. The highest Priority wins. Software matching no rule passes.",
+  "rules": [
+    {
+      "name": "Adobe (all products)",
+      "category": "Adobe",
+      "matchType": "Contains",
+      "publisher": "Adobe",
+      "aliases": [
+        "Adobe", "Photoshop", "Illustrator", "After Effects", "Premiere Pro", "Premiere Rush",
+        "Media Encoder", "Adobe Animate", "Audition", "Lightroom", "Adobe Bridge", "InDesign",
+        "Acrobat", "Creative Cloud", "Adobe XD", "Adobe Dimension", "Character Animator",
+        "Substance"
+      ],
+      "executableNames": [
+        "Photoshop.exe", "Illustrator.exe", "AfterFX.exe", "Adobe Premiere Pro.exe",
+        "Adobe Media Encoder.exe", "Animate.exe", "Audition.exe", "Lightroom.exe",
+        "Adobe Bridge.exe", "InDesign.exe", "Acrobat.exe", "Creative Cloud.exe",
+        "Adobe XD.exe", "Dimension.exe", "Adobe Substance 3D Painter.exe",
+        "Adobe Substance 3D Designer.exe", "Adobe Substance 3D Sampler.exe",
+        "Adobe Substance 3D Stager.exe", "Adobe Substance 3D Modeler.exe"
+      ],
+      "priority": 100,
+      "status": "Fail",
+      "reason": "Software prohibited by policy."
+    },
+    {
+      "name": "JetBrains (all products)",
+      "category": "JetBrains",
+      "matchType": "Contains",
+      "publisher": "JetBrains",
+      "aliases": [
+        "JetBrains", "Rider", "IntelliJ IDEA", "PyCharm", "CLion", "JetBrains Fleet",
+        "WebStorm", "GoLand", "RustRover", "PhpStorm", "RubyMine", "DataGrip",
+        "JetBrains Aqua", "JetBrains Toolbox"
+      ],
+      "executableNames": [
+        "rider64.exe", "idea64.exe", "pycharm64.exe", "clion64.exe", "fleet.exe",
+        "webstorm64.exe", "goland64.exe", "rustrover64.exe", "phpstorm64.exe",
+        "rubymine64.exe", "datagrip64.exe", "aqua64.exe", "jetbrains-toolbox.exe"
+      ],
+      "priority": 100,
+      "status": "Fail",
+      "reason": "Software prohibited by policy."
+    },
+    {
+      "name": "Autodesk",
+      "category": "Autodesk",
+      "matchType": "Contains",
+      "publisher": "Autodesk",
+      "aliases": [
+        "Autodesk", "Maya", "3ds Max", "Mudbox", "MotionBuilder"
+      ],
+      "executableNames": [
+        "maya.exe", "3dsmax.exe", "mudbox.exe", "motionbuilder.exe"
+      ],
+      "priority": 100,
+      "status": "Fail",
+      "reason": "Software prohibited by policy."
+    },
+    {
+      "name": "Marmoset",
+      "category": "Marmoset",
+      "matchType": "Contains",
+      "publisher": "Marmoset",
+      "aliases": [ "Marmoset", "Toolbag" ],
+      "executableNames": [ "Toolbag.exe", "marmoset.exe" ],
+      "priority": 100,
+      "status": "Fail",
+      "reason": "Software prohibited by policy."
+    },
+    {
+      "name": "Microsoft Office (all editions)",
+      "category": "Microsoft Office",
+      "matchType": "Contains",
+      "aliases": [
+        "Microsoft Office", "Microsoft 365", "Office 365", "Microsoft Word", "Microsoft Excel",
+        "Microsoft PowerPoint", "Microsoft Outlook", "Microsoft Access", "Microsoft Publisher",
+        "Microsoft Visio", "Microsoft Project", "Microsoft OneNote", "Office Runtime",
+        "Office Click-to-Run"
+      ],
+      "executableNames": [
+        "WINWORD.EXE", "EXCEL.EXE", "POWERPNT.EXE", "OUTLOOK.EXE", "MSACCESS.EXE",
+        "MSPUB.EXE", "VISIO.EXE", "WINPROJ.EXE", "ONENOTE.EXE"
+      ],
+      "priority": 90,
+      "status": "Fail",
+      "reason": "Software prohibited by policy."
+    },
+    {
+      "name": "WinRAR",
+      "category": "Compression",
+      "matchType": "Contains",
+      "aliases": [ "WinRAR" ],
+      "executableNames": [ "WinRAR.exe", "Rar.exe" ],
+      "priority": 100,
+      "status": "Fail",
+      "reason": "Software prohibited by policy."
+    },
+    {
+      "name": "Windows activation tools",
+      "category": "Activation Tool",
+      "matchType": "Contains",
+      "aliases": [ "KMSPico", "AutoKMS", "KMSAuto", "AAct", "KMSELDI", "KMS Tools", "Re-Loader" ],
+      "executableNames": [
+        "KMSPico.exe", "AutoKMS.exe", "KMSAuto.exe", "KMSAutoNet.exe", "AAct.exe",
+        "AAct_x64.exe", "KMSELDI.exe", "KMSSS.exe", "Re-Loader.exe"
+      ],
+      "priority": 200,
+      "status": "Fail",
+      "reason": "Windows activation tool detected."
+    },
+    {
+      "name": "Microsoft Teams (allowed)",
+      "category": "Microsoft",
+      "matchType": "Contains",
+      "aliases": [ "Microsoft Teams" ],
+      "priority": 95,
+      "status": "Pass",
+      "reason": "Permitted by policy."
+    },
+    {
+      "name": "Explicitly permitted development and creative tools",
+      "category": "Permitted",
+      "matchType": "Contains",
+      "aliases": [
+        "Unity", "Unity Hub", "Visual Studio Community", "Visual Studio Code",
+        "Android Studio", "Blender", "GIMP", "Krita", "Inkscape", "Godot",
+        "Git", "GitHub Desktop", "Fork", "Sourcetree", "7-Zip"
+      ],
+      "priority": 50,
+      "status": "Pass",
+      "reason": "Permitted by policy."
+    }
+  ]
+}
