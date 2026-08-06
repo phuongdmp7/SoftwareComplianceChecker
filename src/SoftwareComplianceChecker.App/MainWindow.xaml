@@ -310,6 +310,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBox Grid.Column="0"
@@ -335,6 +336,14 @@
                                   SelectedItem="{Binding SelectedPublisher}"
                                   materialDesign:HintAssist.Hint="Publisher"
                                   Style="{StaticResource MaterialDesignOutlinedComboBox}" />
+
+                        <!-- Uninstalling is done in Windows' own interface, not here, so a
+                             removal can be reviewed and cancelled by the user. -->
+                        <Button Grid.Column="4" Margin="10,0,0,0"
+                                Content="Uninstall in Windows..."
+                                Command="{Binding OpenInstalledApplicationsCommand}"
+                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                ToolTip="Open the Windows installed apps screen, where software can be uninstalled." />
                     </Grid>
 
                     <DataGrid Style="{StaticResource FindingsGrid}"
@@ -391,6 +400,23 @@
                             <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="140" />
                             <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="3*" />
                             <DataGridTextColumn Header="Reason" Binding="{Binding Reason}" Width="1.6*" />
+
+                            <DataGridTemplateColumn Header="" Width="130">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <!-- The command lives on the view model, not the row,
+                                             so it is reached through the window's DataContext. -->
+                                        <Button Content="Open folder"
+                                                Command="{Binding DataContext.RevealCommand,
+                                                                  RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                                Height="26" Padding="8,0" FontSize="11"
+                                                HorizontalAlignment="Left"
+                                                ToolTip="Open the containing folder in File Explorer with this file selected." />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

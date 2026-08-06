@@ -102,6 +102,7 @@ public static class AppBootstrapper
         services.AddSingleton<IWmiQuery, WindowsWmiQuery>();
         services.AddSingleton<IFileSystem, PhysicalFileSystem>();
         services.AddSingleton<ISystemInfoProvider, SystemInfoProvider>();
+        services.AddSingleton<ISystemLauncher, WindowsSystemLauncher>();
         services.AddSingleton<ActivationToolDetector>();
 
         services.AddSingleton<IOptions<PortableFolderOptions>>(provider =>

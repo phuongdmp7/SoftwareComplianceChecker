@@ -23,6 +23,7 @@ public sealed partial class MainViewModel : ObservableObject
 
     private readonly IComplianceScanService scanService;
     private readonly IReportExportService exportService;
+    private readonly ISystemLauncher systemLauncher;
     private readonly ExportOptions exportOptions;
     private readonly ILogger<MainViewModel> logger;
 
@@ -52,16 +53,19 @@ public sealed partial class MainViewModel : ObservableObject
     /// <summary>Creates the view model.</summary>
     /// <param name="scanService">Runs compliance scans.</param>
     /// <param name="exportService">Writes reports.</param>
+    /// <param name="systemLauncher">Opens Windows locations on the user's behalf.</param>
     /// <param name="exportOptions">Export settings.</param>
     /// <param name="logger">Receives diagnostics.</param>
     public MainViewModel(
         IComplianceScanService scanService,
         IReportExportService exportService,
+        ISystemLauncher systemLauncher,
         IOptions<ExportOptions> exportOptions,
         ILogger<MainViewModel> logger)
     {
         this.scanService = scanService;
         this.exportService = exportService;
+        this.systemLauncher = systemLauncher;
         this.exportOptions = exportOptions.Value;
         this.logger = logger;
 
@@ -195,6 +199,28 @@ public sealed partial class MainViewModel : ObservableObject
             this.StatusMessage = $"Export failed: {ex.Message}";
         }
     }
+
+    /// <summary>
+    /// Opens the Windows screen where applications are uninstalled.
+    /// </summary>
+    /// <remarks>
+    /// The application deliberately does not run uninstall strings itself. Removing software
+    /// is the user's decision, made in Windows' own interface, where it can be reviewed and
+    /// cancelled.
+    /// </remarks>
+    [RelayCommand]
+    private void OpenInstalledApplications() =>
+        this.StatusMessage = this.systemLauncher.OpenInstalledApplications().Message;
+
+    /// <summary>
+    /// Opens File Explorer with the finding's file selected.
+    /// </summary>
+    /// <param name="finding">The finding whose location should be revealed.</param>
+    [RelayCommand(CanExecute = nameof(CanReveal))]
+    private void Reveal(ScanFinding? finding) =>
+        this.StatusMessage = this.systemLauncher.RevealInFileExplorer(finding?.Location).Message;
+
+    private static bool CanReveal(ScanFinding? finding) => !string.IsNullOrWhiteSpace(finding?.Location);
 
     private void ApplyReport(ComplianceReport result)
     {
