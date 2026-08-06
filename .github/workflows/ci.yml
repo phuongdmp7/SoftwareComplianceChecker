@@ -18,10 +18,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up .NET 8
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 8.0.x
 
@@ -61,14 +61,14 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-results
           path: '**/test-results.trx'
           if-no-files-found: warn
 
       - name: Upload application
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: SoftwareComplianceChecker-win-x64
           path: src/SoftwareComplianceChecker.App/bin/Release/net8.0-windows/publish/win-x64/
@@ -82,10 +82,10 @@ jobs:
     # EnableWindowsTargeting setup that makes the cross-platform build work, so a change
     # that quietly breaks it is caught here rather than by the next developer.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up .NET 8
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 8.0.x
 
