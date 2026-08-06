@@ -1,45 +1,38 @@
-# Unity generated
-[Ll]ibrary/
-[Tt]emp/
+# Build output
+[Bb]in/
 [Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Uu]ser[Ss]ettings/
-[Mm]emoryCaptures/
-[Rr]ecordings/
-
-# Asset meta data (only ignore for deleted assets)
-!/[Aa]ssets/**/*.meta
+[Dd]ebug/
+[Rr]elease/
+publish/
+artifacts/
 
 # Visual Studio / Rider / VS Code
 .vs/
 .vscode/
 .idea/
-*.csproj
-*.unityproj
-*.sln
 *.suo
 *.user
-*.userprefs
-*.pidb
-*.booproj
-*.svd
-*.pdb
-*.mdb
-*.opendb
-*.VC.db
+*.userosscache
+*.sln.docstates
+*.psess
+*.vsp
+*.vspx
 
-# Unity3D generated
-sysinfo.txt
-*.apk
-*.aab
-*.unitypackage
-*.app
-crashlytics-build.properties
+# Test / coverage
+[Tt]est[Rr]esult*/
+coverage*.json
+coverage*.xml
+*.coverage
+*.trx
 
-# Gradle
-.gradle/
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# App runtime output (spec: logs/yyyy-MM-dd.log)
+logs/
 
 # OS
 .DS_Store
