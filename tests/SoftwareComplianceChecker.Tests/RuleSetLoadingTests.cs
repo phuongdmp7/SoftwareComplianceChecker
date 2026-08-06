@@ -160,7 +160,7 @@ public sealed class RuleSetLoadingTests : IDisposable
     public void The_shipped_policy_file_is_valid()
     {
         // Guards against a typo in the default rules.json reaching a release.
-        var path = LocateShippedRules();
+        var path = RepositoryFiles.RulesJson();
 
         if (path is null)
         {
@@ -174,22 +174,4 @@ public sealed class RuleSetLoadingTests : IDisposable
             string.Equals(r.Category, PolicyCategories.ActivationTool, StringComparison.OrdinalIgnoreCase));
     }
 
-    private static string? LocateShippedRules()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-
-        while (directory is not null)
-        {
-            var candidate = Path.Combine(directory.FullName, "config", "rules.json");
-
-            if (File.Exists(candidate))
-            {
-                return candidate;
-            }
-
-            directory = directory.Parent;
-        }
-
-        return null;
-    }
 }

@@ -112,6 +112,16 @@
       "reason": "Windows activation tool detected."
     },
     {
+      "name": "Fork (Git client)",
+      "category": "Developer Tools",
+      "matchType": "Regex",
+      "aliases": [ "^Fork( .*)?$" ],
+      "executableNames": [ "Fork.exe" ],
+      "priority": 100,
+      "status": "Fail",
+      "reason": "Software prohibited by policy."
+    },
+    {
       "name": "Microsoft Teams (allowed)",
       "category": "Microsoft",
       "matchType": "Contains",
@@ -127,7 +137,7 @@
       "aliases": [
         "Unity", "Unity Hub", "Visual Studio Community", "Visual Studio Code",
         "Android Studio", "Blender", "GIMP", "Krita", "Inkscape", "Godot",
-        "Git", "GitHub Desktop", "Fork", "Sourcetree", "7-Zip"
+        "Git", "GitHub Desktop", "Sourcetree", "7-Zip"
       ],
       "priority": 50,
       "status": "Pass",
