@@ -64,6 +64,16 @@ public sealed class ShippedPolicyTests
     [Theory]
     [InlineData("Fork")]
     [InlineData("Fork 2.4.1")]
+
+    // A registry DisplayName is not always the clean string the report renders. These all
+    // display as "Fork" or near enough, and every one of them was missed while the rule
+    // required a literal space after the name.
+    [InlineData("Fork\0")]           // value stored with its terminator
+    [InlineData("Fork\u200B")]       // zero-width space
+    [InlineData("Fork\r")]
+    [InlineData("Fork\u00A02.16.1")] // non-breaking space before the version
+    [InlineData("Fork-2.16.1")]
+    [InlineData("Fork (User)")]
     public void Fork_is_prohibited(string name)
     {
         // Fork is free only for evaluation; using it for commercial work requires a purchased
