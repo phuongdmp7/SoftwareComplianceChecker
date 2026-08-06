@@ -7,15 +7,15 @@
         Height="820" Width="1280"
         MinHeight="600" MinWidth="960"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource MaterialDesignPaper}"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{StaticResource AppBackground}"
+        TextElement.Foreground="{StaticResource AppText}"
         TextElement.FontSize="13"
         FontFamily="Segoe UI">
 
     <Window.Resources>
         <Style x:Key="CardBorder" TargetType="Border">
-            <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}" />
+            <Setter Property="Background" Value="{StaticResource AppSurface}" />
+            <Setter Property="BorderBrush" Value="{StaticResource AppBorder}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="8" />
             <Setter Property="Padding" Value="16" />
@@ -51,6 +51,103 @@
             <Setter Property="EnableRowVirtualization" Value="True" />
             <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
             <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+
+            <Setter Property="Background" Value="{StaticResource AppSurface}" />
+            <Setter Property="Foreground" Value="{StaticResource AppText}" />
+            <Setter Property="RowBackground" Value="Transparent" />
+            <Setter Property="AlternatingRowBackground" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{StaticResource AppBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource AppBorder}" />
+            <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
+            <Setter Property="RowHeaderWidth" Value="0" />
+        </Style>
+
+        <!-- Implicit styles: DataGrid's parts are not covered by the MaterialDesign theme, so
+             without these the grid renders with the light system defaults regardless of the
+             dark theme applied to everything else. -->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource AppSurfaceAlt}" />
+            <Setter Property="Foreground" Value="{StaticResource AppTextMuted}" />
+            <Setter Property="BorderBrush" Value="{StaticResource AppBorder}" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="Padding" Value="10,9" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="SeparatorBrush" Value="{StaticResource AppBorder}" />
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource AppText}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AppHover}" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AppSelection}" />
+                    <Setter Property="Foreground" Value="{StaticResource AppText}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource AppText}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <!-- The default cell template paints the system highlight colour when selected,
+                 which is the one place light-theme blue leaks into a dark grid. -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Top" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="{StaticResource AppTextMuted}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Root"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="0,0,0,2"
+                                Padding="16,10">
+                            <ContentPresenter ContentSource="Header"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="{StaticResource AppHover}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Root" Property="BorderBrush" Value="{StaticResource AppAccent}" />
+                                <Setter Property="Foreground" Value="{StaticResource AppText}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -125,7 +222,7 @@
                 <StackPanel>
                     <TextBlock Text="PASSED" Style="{StaticResource CardLabel}" />
                     <TextBlock Text="{Binding PassCountText}" Style="{StaticResource CardValue}"
-                               Foreground="#3FB950" />
+                               Foreground="{StaticResource AppPass}" />
                 </StackPanel>
             </Border>
 
@@ -133,7 +230,7 @@
                 <StackPanel>
                     <TextBlock Text="FAILED" Style="{StaticResource CardLabel}" />
                     <TextBlock Text="{Binding FailCountText}" Style="{StaticResource CardValue}"
-                               Foreground="#F85149" />
+                               Foreground="{StaticResource AppFail}" />
                 </StackPanel>
             </Border>
         </UniformGrid>

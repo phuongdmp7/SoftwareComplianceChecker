@@ -15,6 +15,23 @@
             <converters:StatusToBrushConverter x:Key="StatusToBrush" />
             <converters:StatusToTextConverter x:Key="StatusToText" />
             <converters:EmptyToCollapsedConverter x:Key="EmptyToCollapsed" />
+
+            <!-- The dark palette, shared with the exported HTML report so the application and
+                 its reports look like one product. Declared explicitly rather than drawn from
+                 the MaterialDesign theme because controls that MaterialDesign does not style
+                 implicitly, notably DataGrid, would otherwise fall back to the light system
+                 defaults. -->
+            <SolidColorBrush x:Key="AppBackground" Color="#12141A" />
+            <SolidColorBrush x:Key="AppSurface" Color="#1B1E26" />
+            <SolidColorBrush x:Key="AppSurfaceAlt" Color="#171A21" />
+            <SolidColorBrush x:Key="AppBorder" Color="#2B2F3A" />
+            <SolidColorBrush x:Key="AppText" Color="#E6E8EE" />
+            <SolidColorBrush x:Key="AppTextMuted" Color="#9AA1B1" />
+            <SolidColorBrush x:Key="AppHover" Color="#232734" />
+            <SolidColorBrush x:Key="AppSelection" Color="#2C3446" />
+            <SolidColorBrush x:Key="AppPass" Color="#3FB950" />
+            <SolidColorBrush x:Key="AppFail" Color="#F85149" />
+            <SolidColorBrush x:Key="AppAccent" Color="#4C9AFF" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
