@@ -77,15 +77,20 @@ jobs:
           $version = '${{ steps.version.outputs.version }}'
           $archive = '${{ steps.package.outputs.archive }}'
 
-          $notes = @"
+          # A literal here-string: backtick is PowerShell's escape character, so the markdown
+          # code spans below would be mangled inside an interpolating one.
+          $notes = @'
           Windows 10 and 11, x64.
 
-          Download the archive, extract it anywhere, and run ``SoftwareComplianceChecker.exe``.
+          Download the archive, extract it anywhere, and run `SoftwareComplianceChecker.exe`.
           No installation and no .NET runtime are required.
 
-          ``rules.json``, ``portableFolders.json`` and ``appsettings.json`` sit beside the
+          `rules.json`, `portableFolders.json` and `appsettings.json` sit beside the
           executable and can be edited to change the compliance policy without rebuilding.
-          "@
+
+          This build has not been validated against a live Windows workstation beyond an
+          automated start-up check.
+          '@
 
           gh release create "v$version" $archive "$archive.sha256" `
             --title "v$version" `
