@@ -39,6 +39,26 @@
             <Setter Property="Margin" Value="0,0,0,8" />
         </Style>
 
+        <!-- The scan button is the one action the window exists for, so it carries the
+             saturated primary colour rather than the theme's muted default. -->
+        <Style x:Key="PrimaryActionButton" TargetType="Button"
+               BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="Background" Value="{StaticResource AppPrimary}" />
+            <Setter Property="BorderBrush" Value="{StaticResource AppPrimary}" />
+            <Setter Property="Foreground" Value="{StaticResource AppOnPrimary}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AppPrimaryHover}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource AppPrimaryHover}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AppPrimaryPressed}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource AppPrimaryPressed}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="FindingsGrid" TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="IsReadOnly" Value="True" />
@@ -175,7 +195,7 @@
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <Button Content="Scan"
                         Command="{Binding ScanCommand}"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Style="{StaticResource PrimaryActionButton}"
                         Width="110" Margin="0,0,8,0" />
 
                 <Button Content="Cancel"

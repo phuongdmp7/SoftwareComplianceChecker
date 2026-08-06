@@ -32,6 +32,14 @@
             <SolidColorBrush x:Key="AppPass" Color="#3FB950" />
             <SolidColorBrush x:Key="AppFail" Color="#F85149" />
             <SolidColorBrush x:Key="AppAccent" Color="#4C9AFF" />
+
+            <!-- The primary action colour. Saturated deliberately: the MaterialDesign theme
+                 uses BlueGrey, which is low-saturation by design and leaves the main button
+                 looking disabled. These track the blue in the application icon. -->
+            <SolidColorBrush x:Key="AppPrimary" Color="#2979FF" />
+            <SolidColorBrush x:Key="AppPrimaryHover" Color="#5393FF" />
+            <SolidColorBrush x:Key="AppPrimaryPressed" Color="#1B5FD9" />
+            <SolidColorBrush x:Key="AppOnPrimary" Color="#FFFFFF" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
