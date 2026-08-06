@@ -96,6 +96,12 @@ KMS evidence → FAIL. Retail/OEM with no KMS evidence → PASS. Surface the col
 
 Logs are written to `logs/yyyy-MM-dd.log` (scan duration, detected software, errors, performance metrics). The `logs/` directory is gitignored.
 
+## Icon
+
+`src/SoftwareComplianceChecker.App/Assets/app.ico` is generated, not hand-drawn — edit `tools/generate-icon.py` and re-run it (`python3 tools/generate-icon.py`, needs Pillow) rather than editing the binary. It writes the `.ico` (7 sizes, 16–256) and `docs/icon.png`.
+
+It is wired in twice on purpose: `ApplicationIcon` brands the executable in Explorer, and `Resource` + `Icon=` on the window covers the title bar and taskbar.
+
 ## Conventions
 
 - XML documentation comments on all public APIs.
