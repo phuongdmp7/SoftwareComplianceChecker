@@ -103,3 +103,56 @@ jobs:
             git diff --stat -- samples/
             exit 1
           fi
+
+  release:
+    name: Release on version bump
+    runs-on: ubuntu-latest
+    needs: [windows, linux]
+
+    # Only a version that has passed both platforms' tests earns a release, and only
+    # from main — a bump on a pull request branch must not publish anything.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      actions: write
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Read the declared version
+        id: version
+        run: |
+          version=$(grep -oPm1 '(?<=<Version>)[^<]+' Directory.Build.props)
+
+          if [ -z "$version" ]; then
+            echo "No <Version> element found in Directory.Build.props."
+            exit 1
+          fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Declared version is $version"
+
+      # The whole point of this job: a bump that already has a release is a no-op, so
+      # every other push to main passes through silently.
+      - name: Decide whether this version still needs releasing
+        id: decide
+        run: |
+          version='${{ steps.version.outputs.version }}'
+
+          if git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null 2>&1; then
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+            echo "v$version is already tagged. Nothing to do."
+          else
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+            echo "v$version is not tagged yet. Releasing."
+          fi
+
+      # A tag pushed with GITHUB_TOKEN does not start another workflow, so pushing one
+      # here would silently never build. The release workflow is dispatched directly
+      # instead, and it creates the tag itself as part of publishing.
+      - name: Dispatch the release workflow
+        if: steps.decide.outputs.needed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run release.yml -f version='${{ steps.version.outputs.version }}'

@@ -92,6 +92,10 @@ jobs:
           automated start-up check.
           '@
 
+          # --target pins the tag to the commit this run built. Without it a dispatched
+          # run would tag whatever the default branch happens to point at by the time the
+          # release is cut, which need not be the commit that just passed CI.
           gh release create "v$version" $archive "$archive.sha256" `
+            --target $env:GITHUB_SHA `
             --title "v$version" `
             --notes $notes
